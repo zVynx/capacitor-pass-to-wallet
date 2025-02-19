@@ -13,5 +13,4 @@ public class CapacitorPassToWallet {
         Log.i("Not implememted on Android", value);
         return value;
     }
-    
 }
