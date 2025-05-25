@@ -1,7 +1,7 @@
 {
-  "name": "capacitor-pass-to-wallet",
-  "version": "4.0.1",
-  "description": "Allow to add .pkpass files to Apple Wallet",
+  "name": "eu.zvynx.capacitor.pass-to-wallet",
+  "version": "4.1.0",
+  "description": "Allows to add .pkpass file to Apple Wallet and JWT Passes to Google Wallet",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -13,14 +13,14 @@
     "ios/Plugin/",
     "CapacitorPassToWallet.podspec"
   ],
-  "author": "Valentin Abundo",
+  "author": "Hendrik Leonhardt",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/valentinAbundo/capacitor-pass-to-wallet.git.git"
+    "url": "git+https://github.com/zVynx/capacitor-pass-to-wallet.git"
   },
   "bugs": {
-    "url": "https://github.com/valentinAbundo/capacitor-pass-to-wallet.git/issues"
+    "url": "https://github.com/zVynx/capacitor-pass-to-wallet/issues"
   },
   "keywords": [
     "capacitor",

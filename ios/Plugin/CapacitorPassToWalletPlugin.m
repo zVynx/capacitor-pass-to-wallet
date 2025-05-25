@@ -4,6 +4,6 @@
 // Define the plugin using the CAP_PLUGIN Macro, and
 // each method the plugin supports using the CAP_PLUGIN_METHOD macro.
 CAP_PLUGIN(CapacitorPassToWalletPlugin, "CapacitorPassToWallet",
-           CAP_PLUGIN_METHOD(addToWallet, CAPPluginReturnPromise);
-           CAP_PLUGIN_METHOD(addMultipleToWallet, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(addToAppleWallet, CAPPluginReturnPromise);
+           CAP_PLUGIN_METHOD(addMultipleToAppleWallet, CAPPluginReturnPromise);
 )

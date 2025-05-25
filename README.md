@@ -1,6 +1,8 @@
 # capacitor-pass-to-wallet
 
-Allow to add .pkpass file to Apple Wallet
+This is a fork of the project https://github.com/NitnelavAH/capacitor-pass-to-wallet
+
+Allows to add .pkpass file to Apple Wallet and JWT Passes to Google Wallet
 
 ## Example
 https://youtu.be/FUt2J385yCQ
@@ -10,9 +12,6 @@ https://github.com/NitnelavAH/IonicAdd2Wallet
 
 | Capacitor Version  | Plugin Version |
 | ------------- | ------------- |
-| 4.x  | 1.x  |
-| 5.x  | 2.x |
-| 6.x  | 3.x |
 | 7.x  | 4.x |
 
 ## Install
@@ -22,22 +21,42 @@ npm install capacitor-pass-to-wallet
 npx cap sync
 ```
 
+
+## Android Configuration
+
+On Android add this inside the application tag of your AndroidManifest.xml
+
+```xml
+<application ...> 
+        <meta-data
+                android:name="com.google.android.gms.wallet.api.enabled"
+                android:value="true" /> 
+</application>
+```
+- To be able to add the Pass from your App you also need to add the App Permission inside the Google Pay & Wallet Console
+
+## iOS Configuration
+on iOS, no further steps needed.
+
+
 ## API
 
 <docgen-index>
 
-* [`addToWallet(...)`](#addtowallet)
-* [`addMultipleToWallet(...)`](#addmultipletowallet)
+* [`addToAppleWallet(...)`](#addtoapplewallet)
+* [`addMultipleToAppleWallet(...)`](#addmultipletoapplewallet)
+* [`canAddToGoogleWallet()`](#canaddtogooglewallet)
+* [`addJwtToGoogleWallet(...)`](#addjwttogooglewallet)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### addToWallet(...)
+### addToAppleWallet(...)
 
 ```typescript
-addToWallet(options: { base64: string; }) => Promise<{ message: string; }>
+addToAppleWallet(options: { base64: string; }) => Promise<{ message: string; }>
 ```
 
 | Param         | Type                             |
@@ -49,10 +68,10 @@ addToWallet(options: { base64: string; }) => Promise<{ message: string; }>
 --------------------
 
 
-### addMultipleToWallet(...)
+### addMultipleToAppleWallet(...)
 
 ```typescript
-addMultipleToWallet(options: { base64: string[]; }) => Promise<{ message: string; }>
+addMultipleToAppleWallet(options: { base64: string[]; }) => Promise<{ message: string; }>
 ```
 
 | Param         | Type                               |
@@ -60,6 +79,32 @@ addMultipleToWallet(options: { base64: string[]; }) => Promise<{ message: string
 | **`options`** | <code>{ base64: string[]; }</code> |
 
 **Returns:** <code>Promise&lt;{ message: string; }&gt;</code>
+
+--------------------
+
+
+### canAddToGoogleWallet()
+
+```typescript
+canAddToGoogleWallet() => Promise<{ isAvailable: boolean; reason?: string; }>
+```
+
+**Returns:** <code>Promise&lt;{ isAvailable: boolean; reason?: string; }&gt;</code>
+
+--------------------
+
+
+### addJwtToGoogleWallet(...)
+
+```typescript
+addJwtToGoogleWallet(options: { jwt: string; }) => Promise<{ message: string; passAdded: boolean; }>
+```
+
+| Param         | Type                          |
+| ------------- | ----------------------------- |
+| **`options`** | <code>{ jwt: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ message: string; passAdded: boolean; }&gt;</code>
 
 --------------------
 

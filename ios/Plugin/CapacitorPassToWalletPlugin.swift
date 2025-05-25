@@ -10,7 +10,7 @@ import PassKit
 public class CapacitorPassToWalletPlugin: CAPPlugin {
     private let implementation = CapacitorPassToWallet()
 
-    @objc func addToWallet(_ call: CAPPluginCall) {
+    @objc func addToAppleWallet(_ call: CAPPluginCall) {
         let data = call.getString("base64") ?? ""
 
         if let dataPass = Data(base64Encoded: data, options: .ignoreUnknownCharacters) {
@@ -51,7 +51,7 @@ public class CapacitorPassToWalletPlugin: CAPPlugin {
 
     }
 
-    @objc func addMultipleToWallet(_ call: CAPPluginCall) {
+    @objc func addMultipleToAppleWallet(_ call: CAPPluginCall) {
         let data = call.getArray("base64") ?? []
 
         var pkPasses = [PKPass]()
