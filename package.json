@@ -1,5 +1,5 @@
 {
-  "name": "eu.zvynx.capacitor.pass-to-wallet",
+  "name": "@zvynx/capacitor-pass-to-wallet",
   "version": "4.1.0",
   "description": "Allows to add .pkpass file to Apple Wallet and JWT Passes to Google Wallet",
   "main": "dist/plugin.cjs.js",
@@ -46,7 +46,8 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@capacitor/android": "^7.0.0",
