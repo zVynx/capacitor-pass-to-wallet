@@ -1,8 +1,7 @@
 # capacitor-pass-to-wallet
 
 This is a fork of the project https://github.com/NitnelavAH/capacitor-pass-to-wallet
-
-Allows to add .pkpass file to Apple Wallet and JWT Passes to Google Wallet
+with the addition to be able to add JWT Passes to the Google Wallet
 
 ## Example
 https://youtu.be/FUt2J385yCQ
@@ -17,7 +16,7 @@ https://github.com/NitnelavAH/IonicAdd2Wallet
 ## Install
 
 ```bash
-npm install capacitor-pass-to-wallet
+npm install @zvynx/capacitor-pass-to-wallet
 npx cap sync
 ```
 
