@@ -3,28 +3,22 @@ package eu.zvynx.capacitor.pass2wallet;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
-
-import com.getcapacitor.JSObject;
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
-
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.pay.Pay;
 import com.google.android.gms.pay.PayApiAvailabilityStatus;
 import com.google.android.gms.pay.PayClient;
 
-@CapacitorPlugin(
-    name = "CapacitorPassToWallet",
-    requestCodes = { CapacitorPassToWalletPlugin.ADD_TO_GOOGLE_WALLET_REQUEST_CODE }
-)
+@CapacitorPlugin(name = "CapacitorPassToWallet", requestCodes = { CapacitorPassToWalletPlugin.ADD_TO_GOOGLE_WALLET_REQUEST_CODE })
 public class CapacitorPassToWalletPlugin extends Plugin {
 
     private PayClient walletClient;
-    private PluginCall pendingGoogleWalletCall; 
+    private PluginCall pendingGoogleWalletCall;
 
     protected static final int ADD_TO_GOOGLE_WALLET_REQUEST_CODE = 19008;
 
@@ -37,7 +31,6 @@ public class CapacitorPassToWalletPlugin extends Plugin {
         }
     }
 
-
     /**
      * Checks if the Google Wallet API is available and the device is capable of adding passes.
      * @param call PluginCall
@@ -45,7 +38,6 @@ public class CapacitorPassToWalletPlugin extends Plugin {
     @PluginMethod
     public void canAddToGoogleWallet(PluginCall call) {
         if (walletClient == null) {
-          
             if (getContext() != null) {
                 walletClient = Pay.getClient(getContext());
             } else {
@@ -59,25 +51,21 @@ public class CapacitorPassToWalletPlugin extends Plugin {
 
         walletClient
             .getPayApiAvailabilityStatus(PayClient.RequestType.SAVE_PASSES)
-            .addOnSuccessListener(
-                status -> {
-                    JSObject result = new JSObject();
-                    boolean isAvailable = status == PayApiAvailabilityStatus.AVAILABLE;
-                    result.put("isAvailable", isAvailable);
-                    if (!isAvailable) {
-                        result.put("reason", "Google Wallet status: " + status + ". Ensure Google Wallet app is installed and updated.");
-                    }
-                    call.resolve(result);
+            .addOnSuccessListener((status) -> {
+                JSObject result = new JSObject();
+                boolean isAvailable = status == PayApiAvailabilityStatus.AVAILABLE;
+                result.put("isAvailable", isAvailable);
+                if (!isAvailable) {
+                    result.put("reason", "Google Wallet status: " + status + ". Ensure Google Wallet app is installed and updated.");
                 }
-            )
-            .addOnFailureListener(
-                e -> {
-                    JSObject result = new JSObject();
-                    result.put("isAvailable", false);
-                    result.put("reason", "Error checking Google Wallet API: " + e.getMessage());
-                    call.resolve(result);
-                }
-            );
+                call.resolve(result);
+            })
+            .addOnFailureListener((e) -> {
+                JSObject result = new JSObject();
+                result.put("isAvailable", false);
+                result.put("reason", "Error checking Google Wallet API: " + e.getMessage());
+                call.resolve(result);
+            });
     }
 
     /**
@@ -88,7 +76,7 @@ public class CapacitorPassToWalletPlugin extends Plugin {
     @PluginMethod
     public void addJwtToGoogleWallet(PluginCall call) {
         if (walletClient == null) {
-             if (getContext() != null) {
+            if (getContext() != null) {
                 walletClient = Pay.getClient(getContext());
             } else {
                 call.reject("Google Wallet client not initialized, context unavailable.");
@@ -109,7 +97,6 @@ public class CapacitorPassToWalletPlugin extends Plugin {
         // The result will be handled in the `handleOnActivityResult` method.
         walletClient.savePassesJwt(passJwt, getActivity(), ADD_TO_GOOGLE_WALLET_REQUEST_CODE);
     }
-
 
     /**
      * Handles the result from an activity started by the plugin.
