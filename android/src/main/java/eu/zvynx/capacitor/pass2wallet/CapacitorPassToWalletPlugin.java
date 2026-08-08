@@ -115,24 +115,50 @@ public class CapacitorPassToWalletPlugin extends Plugin {
         }
 
         if (requestCode == ADD_TO_GOOGLE_WALLET_REQUEST_CODE) {
-            JSObject result = new JSObject();
             if (resultCode == Activity.RESULT_OK) {
+                JSObject result = new JSObject();
                 result.put("message", "Pass added or save process initiated successfully.");
                 result.put("passAdded", true);
                 pendingGoogleWalletCall.resolve(result);
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                pendingGoogleWalletCall.reject("Save to Wallet was cancelled by the user.");
             } else {
-                // Handle other potential errors from the Google Wallet SDK.
-                // The Wallet SDK might provide an error code in the Intent data.
-                String errorMessage = "Failed to save pass to Google Wallet.";
-                if (data != null && data.hasExtra("com.google.android.gms.wallet.EXTRA_ERROR_CODE")) {
-                    // See https://developers.google.com/android/reference/com/google/android/gms/wallet/WalletConstants for ERROR_CODE_*
-                    int errorCode = data.getIntExtra("com.google.android.gms.wallet.EXTRA_ERROR_CODE", -1);
-                    errorMessage += " Error code: " + errorCode;
+                String errorCode;
+                String description;
+
+                switch (resultCode) {
+                    case Activity.RESULT_CANCELED:
+                        errorCode = "CANCELED";
+                        
+                        description =
+                            "Google Wallet closed without saving the pass. This happens when the user dismisses the sheet, but also when Wallet rejects the request silently (for example an unauthorized issuer, a pass class that does not exist, or a JWT that failed validation).";
+                        break;
+                    case PayClient.SavePassesResult.API_UNAVAILABLE:
+                        errorCode = "API_UNAVAILABLE";
+                        description = "The Google Wallet API is not available on this device.";
+                        break;
+                    case PayClient.SavePassesResult.SAVE_ERROR:
+                        errorCode = "SAVE_ERROR";
+                        description = "Google Wallet reported an error while saving the pass.";
+                        break;
+                    case PayClient.SavePassesResult.INTERNAL_ERROR:
+                        errorCode = "INTERNAL_ERROR";
+                        description = "Google Wallet reported an internal error while saving the pass.";
+                        break;
+                    default:
+                        errorCode = "UNKNOWN";
+                        description = "Failed to save pass to Google Wallet.";
+                        break;
                 }
 
-                pendingGoogleWalletCall.reject(errorMessage);
+                StringBuilder errorMessage = new StringBuilder(description);
+                errorMessage.append(" (result code ").append(resultCode).append(")");
+
+                // See https://developers.google.com/wallet/generic/android
+                String apiErrorMessage = data != null ? data.getStringExtra(PayClient.EXTRA_API_ERROR_MESSAGE) : null;
+                if (apiErrorMessage != null && !apiErrorMessage.isEmpty()) {
+                    errorMessage.append(": ").append(apiErrorMessage);
+                }
+
+                pendingGoogleWalletCall.reject(errorMessage.toString(), errorCode);
             }
 
             pendingGoogleWalletCall = null;
